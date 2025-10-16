@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的家乡 - The World of Dog Detective</title>
+    <link rel="icon" href="png/web_icon.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            /* 移除默认白色背景，避免覆盖背景图 */
+            background-color: transparent;
+            /* 设置相对定位，为伪元素提供定位基准 */
+            position: relative;
+            /* 使用flex布局，垂直方向排列 */
+            display: flex;
+            flex-direction: column;
+            /* 内容分布在两端（顶部导航和底部页脚会分别靠上和靠下） */
+            justify-content: space-between;
+            /* 最小高度为视口高度，确保背景图至少覆盖整个屏幕 */
+            min-height: 100vh;
+        }
+
+        /* 背景图实现 - 使用伪元素确保背景在最底层 */
+        body::before {
+            /* 引入背景图片 */
+            background-image: url("png/homepage_background.png");
+            /* 背景图居中显示 */
+            background-position: center;
+            /* 背景图不重复 */
+            background-repeat: no-repeat;
+            /* 背景图自适应屏幕大小（保持比例，覆盖整个区域） */
+            background-size: cover;
+            /* 最小高度为视口高度，确保覆盖全屏 */
+            min-height: 100vh;
+            /* 内容生成（伪元素必须设置） */
+            content: "";
+            /* 绝对定位，相对于body定位 */
+            position: absolute;
+            /* 覆盖整个页面 */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* 设置层级为-1，确保在最底层 */
+            z-index: -1;
+        }
+
+        /* 半透明遮罩层 - 增强文字可读性 */
+        body::after {
+            /* 半透明白色背景（rgba第四个值为透明度，0.7表示70%不透明） */
+            background-color: rgba(255, 255, 255, 0.662);
+            /* 内容生成（伪元素必须设置） */
+            content: "";
+            /* 绝对定位，相对于body定位 */
+            position: absolute;
+            /* 覆盖整个页面 */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* 层级为0，位于背景图之上、内容之下 */
+            z-index: 0;
+            /* 允许鼠标事件穿透遮罩层，不影响下方元素交互 */
+            pointer-events: none;
+        }
+
+        .navbar {
+            background-color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* 提高导航栏层级，确保在遮罩层之上 */
+            z-index: 1000;
+        }
+
+        .navbar img {
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 800px;
+            margin-left: 100px;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: #9ec5ff;
+        }
+
+        .page {
+            margin-top: 70px;
+            padding: 20px;
+            /* 确保内容区域高度足够，且层级在遮罩层之上 */
+            min-height: calc(100vh - 70px - 100px); /* 视口高度 - 导航栏高度 - 页脚大致高度 */
+            /* 内容层级设置为1，确保在遮罩层之上 */
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .feature {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+
+        .feature h3 {
+            color: #6ba0e8;
+            margin-top: 0;
+        }
+
+        footer {
+            background-color: #9ec5ff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            margin-top: 20px;
+            /* 确保页脚层级在遮罩层之上 */
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="png/header_icon.png" alt="Header Icon">
+        <a href="home_page.html">首页</a>
+        <a href="experience.html">我的来时路</a>
+        <a href="offline_meeting.html">线下特种兵</a>
+        <a href="hometown.html">我的家乡</a>
+    </div>
+
+    <div class="page">
+        <div class="content">
+            <h2>家乡</h2>
+            <p>人生前十八年，我一直蜷缩在故乡的臂弯里。我以为“思乡”只是课本上轻飘飘的两个铅字，像远山的雾，摸不着，也砸不疼。
+               直到高铁一声长啸，把我卸在两千公里外的站台，夜风带着陌生的海腥味灌进领口，我才尝到“故乡”二字真正的咸度——它混在眼泪里，挂在嘴角，下午一点从食堂买的冷掉的炒粉里全是它的腥甜。
+            </p>
+            <p>我后悔得肠子发青：为什么把指南针调成叛逆的弧度？为什么把“远方”当成必答题？
+               后来，偶然读到一句话：“港湾里的小船当然安全，可亲爱的，那不是造船的理由。”
+               像有人把舷窗猛地推开，咸腥的风忽然变成帆。我踩着这句话重新上路——
+            </p>
+            <p>四季在地图上周而复始，而故乡被折叠成一张薄薄的车票，藏在钱包最里层，像一枚不再流通的旧邮票。
+               十八岁之后，故乡果然只剩冬夏，再无春秋。可我的日历却长出新的年轮——
+            </p>
+            <p>我学会在雷雨夜安抚自己，在语言不通的急诊室比划疼痛，在错过末班车时走两小时回宿舍。每一次踩空，每一次悬置，都让那艘名为“自我”的船板多一道铆钉。故乡没有变小，只是我把它从“全世界”改写成“第一章”。
+               世界这本书，我因为离开而终于能够一读再读；而我这只小船，也终于在一次次离港里，被风浪雕刻成真正的船。
+            </p>
+            
+            <div class="gallery">
+                <img src="png/hometown1.png" alt="家乡风景">
+                <img src="png/hometown2.png" alt="家乡风景">
+                <img src="png/hometown3.png" alt="家乡风景">
+            </div>
+            
+            <div class="feature">
+                <h3>川南丘谷的“甜”与“凉”</h3>
+                <p>
+                    镇西镇躺在荣威山脉的一条断褶里，龙泉山的余脉在此收了个尾，把海拔从800米骤然削到350米，形成一圈马蹄形的浅丘。
+                    丘间是镇西河——沱江的三级支流，像一条撒了花椒面的丝带，把页岩气田的咸涩和甘蔗林的清甜同时带进冲积小平原。
+                    因为高差，这里自成“微盆地”：夜间山坡冷气流下滑，白天谷地暖湿气抬升，昼夜温差11℃，让甘蔗的蔗糖转化期比川东平原多18天，立冬后还能长3个糖度；
+                    也让夏天气温比内江城区低3℃，成为川南唯一不用空调也能午睡的“凉镇”。
+                </p>
+            </div>
+            
+            <div class="feature">
+                <h3>甘蔗刀口上的二十四节气</h3>
+                <p>
+                    立春一到，镇西的“甜”从刀口开始。蔗农把隔年窖藏的尾茎切成三芽段，刀背一敲，芽眼发出清脆的“啪”，像给土地按下启动键。
+                    清明后第一场夜雨，甘蔗拔节声能盖过蛙鸣，此时镇西老街的熬糖铺开始生火，两口连环锅“咕嘟”出琥珀色的蔗汁，舀一瓢浇在刚蒸好的高粱粑上，就是“清明耙”，糯香里带焦糖尾韵。
+                    小满前后，辣椒基地的第一批“二荆条”泛红，蔗叶正好退糖，把甘蔗梢剁碎塞入辣椒蒂，做成“甜辣包”，腌足21天，辣度被蔗糖裹成“先甜后烈”，是镇西人拌面的暗号。
+                    霜降那天，最后一茬甘蔗被砍倒，蔗叶不扔，直接铺在土窑里烤红苕，糖分被热气反渗进薯肉，撕开焦皮，蜜汁顺着纤维滴到炭上，“滋啦”一声，宣告一年甘蔗味的正式收官。
+                </p>
+            </div>
+            
+            <div class="feature">
+                <h3>一条河与一座“盐甜”小镇的24小时声谱</h3>
+                <p>05:30，镇西河第一声水鸟叫像口哨，把薄雾吹出一道缝；06:00，老渡槽的锈铁闸门被拉起，上游页岩气田的返排水“哗”地冲进甘蔗林，铁锈味混着甜秆清香。
+                    07:30，国营食品厂（原老糖厂）的汽笛准时拉响，三长两短，声音撞在60年代的红砖墙上，惊起一排斑鸠；笛声一落，镇西初中早读铃接上，是手摇铜铃，“当——当——”，节奏比成都平原的电子铃慢半拍，好像连时间也被蔗汁黏住。
+                    12:00，老街“廖三凉拌猪耳”开张，菜刀敲砧板“哒哒哒”与隔壁“镇西烧酒”铺的漏斗声“咚咚咚”形成二重奏，空气里瞬间布满酒精与花椒的共振。
+                    15:00，太阳把河面烤成镜子，蔗林深处传来“咔嚓咔嚓”——那是蔗农用弯刀打叶，刀口与青秆摩擦的频率恰好是C大调。
+                    20:00，夜收工，页岩气井的燃烧塔“呼——”一声点亮，像给山谷点了一盏汽灯；
+                    23:00，最后一家烧烤摊收炉，铁刷刮过烤网“呲啦啦”，紧接着是河水拍岸“啪、啪”，把一天的甜与咸重新卷进黑暗，等待下一次蔗节萌发时再被唤醒</p>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 名子探狗侦的个人网站</p>
+        <p>感谢您的访问，Have a good day!</p>
+    </footer>
+</body>
+</html>

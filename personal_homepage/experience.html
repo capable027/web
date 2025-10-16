@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<!-- 声明文档类型为HTML5 -->
+<html lang="zh-CN">
+<head>
+    <!-- 设置字符编码为UTF-8，支持中文显示 -->
+    <meta charset="UTF-8">
+    <!-- 视口设置：适配移动设备，宽度为设备宽度，初始缩放比例1.0 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 网页标题：显示在浏览器标签页 -->
+    <title>我的来时路 - The World of Dog Detective</title>
+    <!-- 设置网页图标：href指定图标路径，type指定图标类型 -->
+    <link rel="icon" href="png/web_icon.png" type="image/png">
+    
+    <!-- 内部CSS样式 -->
+    <style>
+        /* 全局 body 样式设置 */
+        body {
+            /* 字体设置：优先使用微软雅黑，无则使用系统默认无衬线字体 */
+            font-family: 'Microsoft YaHei', sans-serif;
+            /* 清除默认外边距和内边距 */
+            margin: 0;
+            padding: 0;
+            /* 隐藏水平滚动条 */
+            overflow-x: hidden;
+            /* 相对定位作为所有元素的基准 */
+            position: relative;
+        }
+
+        /* 背景图片 - 独立底层元素 */
+        .background-image {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-image: url("png/homepage_background.png");
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1; /* 最底层 */
+        }
+
+        /* 白色透明背景 - 独立中间层元素 */
+        .white-transparent-bg {
+            position: absolute;
+            top: 90px; /* 距离顶部坐标 */
+            left: 100px; /* 距离左侧坐标 */
+            width: 160vh; /* 与内容区宽度匹配 */
+            padding: 400px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            z-index: 10; /* 中间层 */
+            box-sizing: border-box; /* 确保padding不影响总宽度 */
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            /* 导航栏背景色为白色 */
+            background-color: white;
+            /* 固定在页面顶部 */
+            position: fixed;
+            top: 0px; /* 顶部坐标 */
+            left: 0px; /* 左侧坐标 */
+            /* 宽度占满整个屏幕 */
+            width: 100%;
+            /* 使用flex布局，使内容水平排列并居中对齐 */
+            display: flex;
+            align-items: center;
+            /* 内边距：上下10px，左右20px */
+            padding: 10px 20px;
+            /* 添加底部阴影，增强立体感 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* 设置z-index确保导航栏在最上层 */
+            z-index: 1000;
+        }
+
+        /* 导航栏中的图片样式 */
+        .navbar img {
+            /* 图片高度为40px */
+            height: 40px;
+            /* 垂直居中对齐 */
+            vertical-align: middle;
+            /* 左右外边距，控制图片与导航链接的距离 */
+            margin-right: 800px;
+            margin-left: 100px;
+        }
+
+        /* 导航栏中的链接样式 */
+        .navbar a {
+            /* 链接文字颜色为深灰色 */
+            color: #333;
+            /* 去除链接下划线 */
+            text-decoration: none;
+            /* 链接之间的左右外边距15px */
+            margin: 0 15px;
+            /* 文字加粗 */
+            font-weight: bold;
+        }
+
+        /* 导航栏链接 hover 状态（鼠标悬停时） */
+        .navbar a:hover {
+            /* 鼠标悬停时文字颜色变为淡蓝色 */
+            color: #9ec5ff;
+        }
+
+        /* 页面主体容器样式 */
+        .page {
+            /* 上外边距120px：避免内容被固定的导航栏遮挡 */
+            margin-top: 90px;
+            /* 最小高度为视口高度：确保内容区至少占满一屏 */
+            min-height: 100vh;
+            /* 相对定位，使内部元素可基于此定位 */
+            position: relative;
+        }
+
+        /* 文字内容 - 独立顶层元素 */
+        .text-content {
+            position: absolute;
+            top: 60px; /* 与白色背景顶部对齐 */
+            left: 100px; /* 与白色背景左侧对齐 */
+            width: 115vh;
+            padding: 80px;
+            z-index: 20; /* 顶层，在白色背景之上 */
+            box-sizing: border-box;
+        }
+
+        /* 时间线容器样式 */
+        .timeline {
+            /* 相对定位：为内部绝对定位元素提供参考 */
+            position: relative;
+            /* 上下外边距40px，左右0 */
+            margin: 40px 0;
+            /* 左内边距30px：为时间线竖线留出空间 */
+            padding-left: 27px;
+        }
+
+        /* 时间线竖线（通过伪元素实现） */
+        .timeline::before {
+            /* 伪元素内容为空 */
+            content: '';
+            /* 绝对定位：相对于.timeline容器 */
+            position: absolute;
+            left: 0; /* 左侧对齐容器 */
+            top: 0; /* 顶部对齐容器 */
+            bottom: 0; /* 底部对齐容器（高度与容器一致） */
+            width: 4px; /* 竖线宽度 */
+            background-color: #9ec5ff; /* 竖线颜色为淡蓝色 */
+        }
+
+        /* 时间线中的每个条目样式 */
+        .timeline-item {
+            /* 相对定位：为内部圆点提供参考 */
+            position: relative;
+            /* 下外边距30px：条目之间的距离 */
+            margin-bottom: 30px;
+        }
+
+        /* 时间线条目前的圆点（通过伪元素实现） */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px; /* 向左偏移36px，与竖线对齐 */
+            top: 5px; /* 顶部偏移5px，垂直居中对齐文字 */
+            width: 16px; /* 圆点宽度 */
+            height: 16px; /* 圆点高度 */
+            border-radius: 50%; /* 圆形 */
+            background-color: white; /* 圆点内部为白色 */
+            border: 3px solid #9ec5ff; /* 圆点边框为淡蓝色，宽度3px */
+        }
+
+        /* 时间线中的日期样式 */
+        .timeline-date {
+            font-weight: bold; /* 文字加粗 */
+            color: #666; /* 颜色为深灰色 */
+            margin-bottom: 5px; /* 下外边距5px，与下方标题分隔 */
+        }
+
+        /* 右侧图片 - 独立顶层元素 */
+        .right-image {
+            position: absolute;
+            right: 140px; /* 右侧坐标 */
+            top: 300px; /* 顶部坐标 */
+            max-width: 400px;
+            z-index: 20; /* 顶层 */
+        }
+
+        /* 右侧图片样式 */
+        .right-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #9ec5ff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            margin-top: 80px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .white-transparent-bg, .text-content {
+                position: relative;
+                left: 0;
+                top: 0;
+                max-width: 90%;
+                margin: 0 auto 40px;
+            }
+            .right-image {
+                position: relative;
+                right: 0;
+                top: 0;
+                max-width: 90%;
+                margin: 0 auto 40px;
+            }
+            footer {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景图片 - 独立元素 -->
+    <div class="background-image"></div>
+    
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <!-- 导航栏图标 -->
+        <img src="png/header_icon.png" alt="Header Icon">
+        <!-- 导航链接 -->
+        <a href="home_page.html">首页</a>
+        <a href="experience.html">我的来时路</a>
+        <a href="offline_meeting.html">线下特种兵</a>
+        <a href="hometown.html">我的家乡</a>
+    </div>
+
+    <!-- 页面主体内容 -->
+    <div class="page">
+        <!-- 白色透明背景 - 独立元素 -->
+        <div class="white-transparent-bg"></div>
+        
+        <!-- 文字内容 - 独立元素 -->
+        <div class="text-content">
+            <!-- 页面标题 -->
+            <h2>我的来时路</h2>
+            <!-- 时间线容器 -->
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2011年 - 2017年</div>
+                    <h3>小学：四川省内江市威远县镇西镇中心学校</h3>
+                    <p>其实童年也过得挺曲折的，因为性格原因没有什么伙伴，但也还好，六年终究大体基调是快乐的。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2017年 - 2020年</div>
+                    <h3>初中：四川省内江市威远县镇西镇镇西中学</h3>
+                    <p>算是读书时期最开心的一段时光，虽然头一次有了七科的功课，但同时也遇见了人生中特别重要的一位长辈，她曾在文章里引用了一句话：教育的本质是一棵树摇动另一棵树，那天晚上我想，她确实摇动了我这棵在风雨中摇摆的小树。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2020年 - 2023年</div>
+                    <h3>高中：四川省内江市威远县威远中学</h3>
+                    <p>最充实也是最难熬的三年。高中是青春疼痛文学里所有好的坏的故事发生的地方。我的高中生活不算精彩但也较旁人的稍跌宕起伏一些，所幸三年所学未负前十八年所付出，也感谢那三年不肯放弃自己的自己。有句话很适合我的高中生活——请你务必，一而再，再而三，三而不竭，千次万次，毫不犹豫地救自己于水火之中。嗯，我应该也做到了。</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023年 - 至今</div>
+                    <h3>大学：湖北省武汉市洪山区华中师范大学</h3>
+                    <p>“远离家乡，不胜唏嘘”，以前懵懵懂懂，答题只知道说是思乡之情。体验了当游子的滋味，才明白了古代文人墨客笔下所写的思乡情。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧图片 - 独立元素 -->
+        <div class="right-image">
+            <img src="png/1.png" alt="右侧展示图片" onerror="this.src='https://picsum.photos/400/600'; this.alt='图片加载失败'">
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2025 名子探狗侦的个人网站</p>
+        <p>感谢您的访问，Have a good day!</p>
+    </footer>
+</body>
+</html>

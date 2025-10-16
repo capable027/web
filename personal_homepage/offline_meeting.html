@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<!-- 声明文档类型为HTML5 -->
+<html lang="zh-CN">
+<!-- HTML根元素，lang属性指定页面主要语言为简体中文 -->
+
+<head>
+    <!-- 头部区域，包含文档的元数据、样式和标题等 -->
+    <meta charset="UTF-8">
+    <!-- 元数据：指定字符编码为UTF-8，确保中文等字符正确显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 元数据：设置视口，使页面在移动设备上正确缩放，width=device-width表示宽度等于设备宽度，initial-scale=1.0表示初始缩放比例为1 -->
+    <title>线下特种兵 - The World of Dog Detective</title>
+    <!-- 设置页面标题，将显示在浏览器标签页上 -->
+    <link rel="icon" href="png/web_icon.png" type="image/png">
+    <!-- 链接到网站图标（favicon），指定图标路径和类型 -->
+    <style>
+        /* 样式表区域，用于定义页面的CSS样式 */
+
+        /* 基础样式重置 */
+        body {
+            /* 设置字体为微软雅黑，若不支持则使用系统默认无衬线字体 */
+            font-family: 'Microsoft YaHei', sans-serif;
+            /* 清除body默认的外边距和内边距 */
+            margin: 0;
+            padding: 0;
+            /* 设置body为flex容器，子元素垂直方向排列（从上到下） */
+            display: flex;
+            flex-direction: column;
+            /* 最小高度为视口高度（100vh），确保背景能覆盖整个屏幕高度 */
+            min-height: 100vh;
+            /* 相对定位，为后续的伪元素（::before和::after）提供定位基准 */
+            position: relative;
+        }
+
+        /* 背景图设置 - 使用伪元素实现，避免影响内容布局 */
+        body::before {
+            content: "";
+            /* 伪元素必须设置content属性，空字符串表示无内容 */
+            /* 设置背景图片，路径为项目中的png文件夹下的homepage_background.png */
+            background-image: url("png/homepage_background.png");
+            /* 背景图在容器中居中显示 */
+            background-position: center;
+            /* 背景图不重复平铺 */
+            background-repeat: no-repeat;
+            /* 背景图自适应容器大小，保持比例并覆盖整个容器 */
+            background-size: cover;
+            /* 绝对定位，使背景图覆盖整个页面 */
+            position: absolute;
+            top: 0;
+            /* 距离顶部0 */
+            left: 0;
+            /* 距离左侧0 */
+            right: 0;
+            /* 距离右侧0 */
+            bottom: 0;
+            /* 距离底部0 */
+            /* 层级设置为-1，确保背景图在最底层，不遮挡其他内容 */
+            z-index: -1;
+        }
+
+        /* 半透明遮罩层 - 覆盖在背景图上，增强文字与背景的对比度，提高可读性 */
+        body::after {
+            content: "";
+            /* 伪元素必须设置content属性 */
+            /* 背景色为半透明白色（透明度约64%），rgba第四个值为透明度（0-1） */
+            background-color: rgba(255, 255, 255, 0.363);
+            /* 绝对定位，覆盖整个页面 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* 层级为0，位于背景图之上、页面内容之下 */
+            z-index: 0;
+            /* 允许鼠标事件穿透遮罩层，不影响下方元素的交互 */
+            pointer-events: none;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            /* 导航栏背景色为白色 */
+            background-color: white;
+            /* 固定定位，使导航栏始终位于页面顶部 */
+            position: fixed;
+            top: 0;
+            /* 距离顶部0 */
+            width: 100%;
+            /* 宽度占满整个页面 */
+            /* 设置为flex容器，子元素水平排列并垂直居中 */
+            display: flex;
+            align-items: center;
+            /* 内边距：上下10px，左右20px */
+            padding: 10px 20px;
+            /* 底部阴影效果，增强立体感（水平偏移0，垂直偏移2px，模糊5px，颜色为半透明黑色） */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* 层级设置为1000，确保导航栏在其他内容之上，不被遮挡 */
+            z-index: 1000;
+        }
+
+        /* 导航栏中的图片样式 */
+        .navbar img {
+            /* 图片高度为40px */
+            height: 40px;
+            /* 垂直对齐方式为中间，与文字对齐 */
+            vertical-align: middle;
+            /* 右侧外边距800px，左侧外边距100px，控制图片与导航链接的距离 */
+            margin-right: 800px;
+            margin-left: 100px;
+        }
+
+        /* 导航栏中的链接样式 */
+        .navbar a {
+            /* 链接文字颜色为深灰色 */
+            color: #333;
+            /* 去除链接默认的下划线 */
+            text-decoration: none;
+            /* 链接之间的左右外边距为15px，控制间距 */
+            margin: 0 15px;
+            /* 文字加粗 */
+            font-weight: bold;
+        }
+
+        /* 导航栏链接的hover状态（鼠标悬停时） */
+        .navbar a:hover {
+            /* 鼠标悬停时文字颜色变为浅蓝色 */
+            color: #9ec5ff;
+        }
+
+        /* 页面主体内容容器样式 */
+        .page {
+            /* 顶部留出70px的外边距，避免内容被固定的导航栏遮挡 */
+            margin-top: 70px;
+            /* 内边距20px，使内容与容器边缘有间距 */
+            padding: 20px;
+            /* flex属性设为1，使.page容器占据剩余的垂直空间，实现footer在底部的布局 */
+            flex: 1;
+            /* 相对定位，确保内容在遮罩层之上 */
+            position: relative;
+            z-index: 1;
+            /* 层级1，高于遮罩层（z-index:0） */
+        }
+
+        /* 主要内容区域样式 */
+        .content {
+            /* 最大宽度1200px，超过后不再变宽 */
+            max-width: 1200px;
+            /* 水平居中（左右外边距auto） */
+            margin: 0 auto;
+            /* 内边距：上下40px，左右20px */
+            padding: 40px 20px;
+        }
+
+        /* 活动列表容器样式，使用网格布局 */
+        .events {
+            /* 网格布局，列数自动填充，每列最小宽度300px，最大宽度1fr（平均分配剩余空间） */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            /* 网格项之间的间距为30px（行列间距相同） */
+            gap: 30px;
+            /* 顶部外边距30px，与上方内容保持距离 */
+            margin-top: 30px;
+        }
+
+        /* 活动卡片样式 */
+        .event-card {
+            /* 卡片背景色设置为白色，可通过调整rgba最后一个值（0-1）改变透明度 */
+            background-color: rgba(255, 255, 255, 0.71);
+            /* 圆角边框，半径8px */
+            border-radius: 8px;
+            /* 卡片阴影效果（水平0，垂直2px，模糊10px，半透明黑色） */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.598);
+            /* 超出卡片的内容隐藏（如图片超出部分） */
+            overflow: hidden;
+            /* 过渡效果：transform属性变化时持续0.3秒，使动画平滑 */
+            transition: transform 0.3s;
+            /* 相对定位，确保卡片在遮罩层之上 */
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 活动卡片的hover状态（鼠标悬停时） */
+        .event-card:hover {
+            /* 鼠标悬停时卡片向上移动5px，增强交互感 */
+            transform: translateY(-5px);
+        }
+
+        /* 活动卡片中的图片样式 */
+        .event-img {
+            /* 宽度占满卡片 */
+            width: 100%;
+            /* 图片高度 */
+            height: 220px;
+            /* 图片缩放方式：保持比例，裁剪多余部分以填充容器 */
+            object-fit: cover;
+        }
+
+        /* 活动卡片中的信息区域样式 */
+        .event-info {
+            /* 内边距20px，使文字与卡片边缘有间距 */
+            padding: 20px;
+        }
+
+        /* 活动日期样式 */
+        .event-date {
+            /* 日期文字颜色为浅蓝色 */
+            color: #94bcf9;
+            /* 文字加粗 */
+            font-weight: bold;
+            /* 底部外边距10px，与下方标题保持距离 */
+            margin-bottom: 10px;
+        }
+
+        /* 页脚样式 */
+        footer {
+            /* 页脚背景色为浅蓝色 */
+            background-color: #9ec5ff;
+            /* 文字颜色为白色 */
+            color: white;
+            /* 文字居中对齐 */
+            text-align: center;
+            /* 内边距10px */
+            padding: 10px;
+            /* 宽度占满整个页面 */
+            width: 100%;
+            /* 顶部外边距20px，与上方内容保持距离 */
+            margin-top: 20px;
+            /* 相对定位，确保页脚在最上层 */
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏区域 -->
+    <div class="navbar">
+        <!-- 导航栏左侧图标 -->
+        <img src="png/header_icon.png" alt="Header Icon">
+        <!-- 导航链接，分别指向不同页面 -->
+        <a href="home_page.html">首页</a>
+        <a href="experience.html">我的来时路</a>
+        <a href="offline_meeting.html">线下特种兵</a>
+        <a href="hometown.html">我的家乡</a>
+    </div>
+
+    <!-- 页面主体内容区域 -->
+    <div class="page">
+        <div class="content">
+            <!-- 页面标题 -->
+            <h2>线下特种兵 🍺🥬</h2>
+            <!-- 页面说明文字 -->
+            <p>本人再就业男团团粉，团偏生亮，任何时候再就业全肯定。随缘线下，欢迎来线下抓我🤲🥺</p>
+            <p>磕cp的兄弟，我磕的，11099、2999、71399......这个狗侦就是个铁血官配党，拒12 17cp向。任何时候，团＞cp，望周知🫡</p>
+            <p>跟着老叔看世界，全国各地随机刷新一个狗侦，武汉、长沙、常州、南京、广州......谢谢你们💕世界这本书我又因为爱多读了一页。</p>
+            <p>别问太多为什么，至少今天很快乐！</p>
+
+            <!-- 活动列表容器，使用网格布局展示多个活动卡片 -->
+            <div class="events">
+                <div class="event-card">
+                    <!-- 活动图片 -->
+                    <img src="png/241108.png" alt="活动照片" class="event-img">
+                    <!-- 活动信息区域 -->
+                    <div class="event-info">
+                        <!-- 活动日期 -->
+                        <div class="event-date">2024.11.08</div>
+                        <!-- 活动标题 -->
+                        <h3>🐯</h3>
+                        <h3>陆虎“像你这样的朋友”武汉场</h3>
+                        <!-- 活动描述 -->
+                        <p>像是做了一场大梦，梦里我见了一直在屏幕里那个人，这是陆虎的第一场体育馆，也是我人生中第一场演唱会
+                            有幸和陆虎一起度过了愉快的近三小时的时间。在陆虎谢谢我们的同时我也要说，谢谢陆虎</p>
+                        <p>喜欢陆虎，我真的很骄傲。陆虎，你是真的很不错，真的真的很不错。不说再见，我只想说，下次见。</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <img src="png/241130.png" alt="活动照片" class="event-img">
+                    <div class="event-info">
+                        <div class="event-date">2024.11.30</div>
+                        <h3>🐦</h3>
+                        <h3>张远“白”武汉场</h3>
+                        <p>月初见🐯，月末见🐦，张远给我造了一场名为白的梦，梦里灯火阑珊。</p>
+                        <p>小鸟小鸟，有没有人告诉你你唱歌真的很好听，现场看你跳舞跟在屏幕上看完全是两种感觉，现场看你跳舞像一只灵活的泥鳅一样，特别会扭（bushi）</p>
+                        <p>他说留白这个词很浪漫，那就把期待放到下一次见面，张远，我们下次见。</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <img src="png/250329.png" alt="活动照片" class="event-img">
+                    <div class="event-info">
+                        <div class="event-date">2025.03.29</div>
+                        <h3>🐱</h3>
+                        <h3>苏醒“Nothing More”武汉场</h3>
+                        <p>这个季节的武汉和苏醒的应援色真的很适配，在你唱着《老东西》出场那一刻，就是我平凡日子里的一缕阳光照在了身上。</p>
+                        <p>或许过程轰轰烈烈，或许见面很难，但在同一片天空下，我们都在努力生活着，这就够了。</p>
+                        <p>听过苏醒的现场，你就会明白为什么零七年他是亚军。那么，苏醒，我们，下次见。</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <!-- 活动图片 -->
+                    <img src="png/250502.png" alt="活动照片" class="event-img">
+                    <!-- 活动信息区域 -->
+                    <div class="event-info">
+                        <!-- 活动日期 -->
+                        <div class="event-date">2025.05.02</div>
+                        <!-- 活动标题 -->
+                        <h3>🦈🐱🦕🐦🦉🐯</h3>
+                        <h3>第十届太湖湾音乐节</h3>
+                        <!-- 活动描述 -->
+                        <p>追星怎么可能追谁都一样呢，再就业，你们六个真的比我想象中的更爱团。哥六个在场上就猛猛互cue，最后第一次除节目之外在我们面前合体。</p>
+                        <p>活该一出来的时候，糊糊、Allen、远远、小虎、亮哥，一个一个都从后台蹦出来了，我以为合体只是梦啊！！！但是你们在我面前让我梦想成真了😭</p>
+                        <p>再就业男团就是群像的神！！！</p>
+                        <p>下辈子如果追星，我还追你们再就业。太湖湾真的让我感受到了一句话：“爱让悬崖变平地 长出森林”。再就业 今年我们一定要多见面！！！！</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <!-- 活动图片 -->
+                    <img src="png/250603.png" alt="活动照片" class="event-img">
+                    <!-- 活动信息区域 -->
+                    <div class="event-info">
+                        <!-- 活动日期 -->
+                        <div class="event-date">2025.06.03</div>
+                        <!-- 活动标题 -->
+                        <h3>🐯</h3>
+                        <h3>央视《乐在旅途》节目收官路演</h3>
+                        <!-- 活动描述 -->
+                        <p>陆虎你看你的兵已占领路演区域的一半，c位全为绿！陆续辉煌，为虎而狂！！！</p>
+                        <p>小虎小虎，我们上次在太湖湾没有一起看到的月亮今天看到了，小虎你也注意到了吧。这几天都和小虎待一个城市哎，小虎小虎这场线下结束我就开始我的期末周了捏。</p>
+                        <p>下次见面是什么时候，当时刚结束的我可能不太知道，现在我可知道了，1025大莲花要见完！！！</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <!-- 活动图片 -->
+                    <img src="png/250628.png" alt="活动照片" class="event-img">
+                    <!-- 活动信息区域 -->
+                    <div class="event-info">
+                        <!-- 活动日期 -->
+                        <div class="event-date">2025.06.28</div>
+                        <!-- 活动标题 -->
+                        <h3>🦉</h3>
+                        <h3>王铮亮“On the road to”广州场</h3>
+                        <!-- 活动描述 -->
+                        <p>一千多公里的奔赴,见到了这个王铮亮。有想过会哭，可是没想到哭两次。</p>
+                        <p>连唱十一首的畅快、小山海的合唱、星夜的满场星光点点、不凡的律动荧光棒......小亮你看，有这么多人爱你。</p>
+                        <p>跟朋友开玩笑说：“我可能比王铮亮都更喜欢他的新话筒”，为什么在知晓他有定制话筒的时候会这么开心呢，可能是本身觉得王铮亮配得上更好的吧。</p>
+                        <p>那样一副嗓音，就应该唱很多很多的歌。可是小亮，不管发生什么我都爱你，你只需要做你想做的，就好。</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <!-- 活动图片 -->
+                    <img src="png/250830.png" alt="活动照片" class="event-img">
+                    <!-- 活动信息区域 -->
+                    <div class="event-info">
+                        <!-- 活动日期 -->
+                        <div class="event-date">2025.08.30</div>
+                        <!-- 活动标题 -->
+                        <h3>🦉</h3>
+                        <h3>王铮亮“慢人星夜签唱会”长沙场</h3>
+                        <!-- 活动描述 -->
+                        <p>小亮小亮，谢谢你开完万人演唱会还会回来给我们开livehouse嗷。这次虽然进场比较晚，但是livehouse离小亮也是真的近嗷。</p>
+                        <p>虽然没有在武汉听到《偷偷》但是在长沙听到了《故长安》哎。</p>
+                        <p>这次接到小亮下班了，但是总感觉很不真实，我还是喜欢你在舞台上那种闪闪发光的感觉，小亮本就是适合舞台的人，就应该好好唱歌。</p>
+                        <p>这学期要跟小亮见好多好多面嗷，小亮我们1025大莲花见，1115长沙见，1122武汉继续见。</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <!-- 活动图片 -->
+                    <img src="png/250920.png" alt="活动照片" class="event-img">
+                    <!-- 活动信息区域 -->
+                    <div class="event-info">
+                        <!-- 活动日期 -->
+                        <div class="event-date">2025.09.20</div>
+                        <!-- 活动标题 -->
+                        <h3>🦈</h3>
+                        <h3>陈楚生“荒芜之境”南京场</h3>
+                        <!-- 活动描述 -->
+                        <p>歌手结束后的第一场演唱会，跨越了四百四十公里来见你，听到了很多我想听的歌——庙堂之外 获奖之作 活该……</p>
+                        <p>你唱将进酒的时候，第一句出来我就哭了，三个月的歌手之旅，我就那样每周五一场场直播看下来，将进酒开始，获奖之作结束，个中有许多挫折 但最后结果也不算太坏。</p>
+                        <p>面对全场齐喊歌王，你说：“没有什么歌王不歌王的，有你们听我唱歌就够了”，那三个月，我想我会写点什么，毕竟，真的很不容易。</p>
+                        <p>陈楚生,这次见面很开心,我们1025杭州大莲花继续见。</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <!-- 活动图片 -->
+                    <img src="png/251025.png" alt="活动照片" class="event-img">
+                    <!-- 活动信息区域 -->
+                    <div class="event-info">
+                        <!-- 活动日期 -->
+                        <div class="event-date">2025.10.25</div>
+                        <!-- 活动标题 -->
+                        <h3>🦈🐱🦕🐦🦉🐯</h3>
+                        <h3>再就业男团“至少今天很快乐”杭州场</h3>
+                        <!-- 活动描述 -->
+                        <p>盼了多久的六人合体团体演唱会，你们不是假团吗，怎么给我开上团演了。不管了，手里已有票，酒店已定好，老叔我们又可以见面了！！！</p>
+                        <p>这是一场还没去的线下，持续更新中......</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚区域 -->
+    <footer>
+        <p>© 2025 名子探狗侦的个人网站</p>
+        <p>感谢您的访问，Have a good day!</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 设置视口，确保在移动设备上正确显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The World of Dog Detective</title>
+    <!-- 设置网页图标 -->
+    <link rel="icon" href="png/web_icon.png" type="image/png">
+    <style>
+        /* 全局样式设置 */
+        body {
+            /* 设置字体为微软雅黑，无衬线字体 */
+            font-family: 'Microsoft YaHei', sans-serif;
+            /* 清除默认外边距和内边距 */
+            margin: 0;
+            padding: 0;
+            /* 背景色设为白色 */
+            background-color: #fff;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            /* 导航栏背景色为白色 */
+            background-color: white;
+            /* 固定在页面顶部 */
+            position: fixed;
+            top: 0;
+            /* 宽度占满整个屏幕 */
+            width: 100%;
+            /* 使用flex布局，使内容水平排列并居中对齐 */
+            display: flex;
+            align-items: center;
+            /* 内边距：上下10px，左右20px */
+            padding: 10px 20px;
+            /* 添加底部阴影，增强立体感 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* 设置z-index确保导航栏在最上层 */
+            z-index: 1000;
+        }
+
+        /* 导航栏中的图片样式 */
+        .navbar img {
+            /* 图片高度为40px */
+            height: 40px;
+            /* 垂直居中对齐 */
+            vertical-align: middle;
+            /* 左右外边距，控制图片与导航链接的距离 */
+            margin-right: 800px;
+            margin-left: 100px;
+        }
+
+        /* 导航栏链接样式 */
+        .navbar a {
+            /* 链接文字颜色 */
+            color: #333;
+            /* 去除下划线 */
+            text-decoration: none;
+            /* 链接之间的间距 */
+            margin: 0 15px;
+            /* 文字加粗 */
+            font-weight: bold;
+        }
+
+        /* 导航链接 hover 效果 */
+        .navbar a:hover {
+            /* 鼠标悬停时文字变色 */
+            color: #9ec5ff;
+        }
+
+        /* 页面主体样式 */
+        .page {
+            /* 顶部外边距，避免内容被固定导航栏遮挡 */
+            margin-top: 70px;
+            /* 内边距 */
+            padding: 20px;
+            /* 最小高度为视口高度，确保内容占满屏幕 */
+            min-height: 100vh;
+        }
+
+        /* 首页样式 */
+        .home {
+            /* 设置背景图片，居中显示且不重复 */
+            background: url('png/homepage_background.png') no-repeat center center;
+            /* 背景图片自适应屏幕大小 */
+            background-size: cover;
+            /* 最小高度为视口高度 */
+            min-height: 100vh;
+            /* 使用flex布局，垂直方向排列，内容分布在两端 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* 相对定位，为伪元素提供定位基准 */
+            position: relative;
+        }
+
+        /* 页面遮罩层（半透明白色覆盖在背景图上） */
+        .page::before {
+            content: '';
+            /* 绝对定位，覆盖整个页面 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 半透明白色背景，增强文字可读性 */
+            background-color: rgba(255, 255, 255, 0.603);
+            /* 层级在背景图之上，内容之下 */
+            z-index: 1;
+            /* 允许鼠标事件穿透遮罩层 */
+            pointer-events: none;
+        }
+
+        /* 首页头部容器 */
+        .home-header {
+            /* 相对定位，确保内容在遮罩层之上 */
+            position: relative;
+            z-index: 2;
+            /* flex布局，内容左右分布并垂直居中 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* 首页文字内容 */
+        .home-content {
+            position: relative;
+            z-index: 2;
+            /* 文字左对齐 */
+            text-align: left;
+            color: #333;
+            /* 内边距，控制内容位置 */
+            padding: 200px 100px;
+        }
+
+        /* 首页大标题样式 */
+        .home-content h1 {
+            font-size: 85px;
+            margin: 0;
+        }
+
+        /* 首页小标题样式 */
+        .home-content p.small-text {
+            font-size: 25px;
+            margin: 25px 0 0;
+        }
+
+        /* 头像容器 */
+        .avatar {
+            position: relative;
+            z-index: 2;
+            /* 图片右对齐 */
+            text-align: right;
+            padding: 200px 110px;
+        }
+
+        /* 头像图片样式 */
+        .avatar img {
+            width: 400px;
+            height: 400px;
+            /* 圆形头像 */
+            border-radius: 50%;
+            /* 白色边框 */
+            border: 8px solid #fff;
+            /* 轻微阴影，增强立体感 */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* 关于我区域整体容器样式 */
+        .about {
+            /* 
+            * 使用Flexbox布局，并设置为垂直方向排列（column）
+            * 这样可以让子元素（标题和内容容器）垂直堆叠，实现标题单独一行的效果
+            */
+            display: flex;
+            flex-direction: column;
+            /* 
+            * 相对定位：使该容器成为子元素绝对定位的参考基准
+            * 确保子元素的z-index相对于此容器生效
+            */
+            position: relative;
+            /* 
+            * 设置z-index为2：确保"关于我"区域内容显示在背景遮罩层（z-index:1）之上
+            * 避免被半透明遮罩遮挡内容
+            */
+            z-index: 2;
+            /* 内边距：上下左右各20px，为区域内部内容提供留白空间 */
+            padding: 100px;
+            /* 最小高度设置：确保有足够空间容纳所有绝对定位元素 */
+            min-height: 600px;
+        }
+
+        /* 关于我区域的标题样式 */
+        .about h2 {
+            /* 标题文字大小为30px */
+            font-size: 32px;
+            /* 标题文字左对齐，增强视觉焦点 */
+            text-align: left;
+            /* 标题文字颜色设置为浅蓝色（#8fb8e1），与整体风格呼应 */
+            color: #8fb8e1;
+            /* 
+            * 底部外边距30px：在标题下方预留空白
+            * 实现标题与下方内容容器的分隔，增强层次感
+            */
+            margin-left: 275px;
+            margin-top: 120px;
+            /* margin-bottom: 30px; */
+            /* 宽度100%：确保标题占满容器宽度，保证对齐效果稳定 */
+            width: 100%;
+        }
+
+        /* 关于我区域的文字介绍部分样式 - 改为绝对定位 */
+        .about-text {
+            /* 
+            * 绝对定位：脱离文档流，使用坐标精确控制位置
+            * 位置相对于最近的已定位祖先元素（.about）
+            */
+            position: absolute;
+            /* 左侧坐标：距离.about容器左侧200px */
+            left: 200px;
+            /* 顶部坐标：距离.about容器顶部200px */
+            top: 275px;
+            /* 宽度设置：限制文本宽度，避免过长影响阅读 */
+            width: 500px;
+            /* 文字大小为20px，保证阅读清晰度 */
+            font-size: 20px;
+            /* 文字颜色为深灰色（#333），提高可读性 */
+            color: #333;
+            /* 层级设置：确保文字在正常内容层级 */
+            z-index: 3;
+        }
+
+        /* 碎碎念容器：包含独立图片和文字 - 改为绝对定位 */
+        .notes-container {
+            /* 
+            * 绝对定位：脱离文档流，使用坐标精确控制位置
+            * 位置相对于最近的已定位祖先元素（.about）
+            */
+            position: absolute;
+            /* 右侧坐标：距离.about容器右侧200px */
+            right: 200px;
+            /* 顶部坐标：距离.about容器顶部200px */
+            top: 200px;
+            /* 宽度设置：控制碎碎念区域整体宽度 */
+            width: 500px;
+            /* 相对定位：作为子元素（图片和文字）的定位基准 */
+            position: absolute;
+            /* 层级设置：确保与about-text同级 */
+            z-index: 2;
+        }
+
+        /* 碎碎念独立图片样式 */
+        .notes-image {
+            /* 图片宽度：占容器宽度的90% */
+            width: 100%;
+            /* 高度自动：保持图片原有比例 */
+            height: auto;
+            /* 层级设置：确保图片在文字下方作为背景 */
+            z-index: 1;
+        }
+
+        /* 碎碎念文字区域样式 */
+        .notes-text {
+            /* 绝对定位：相对于.notes-container定位 */
+            position: absolute;
+            /* 文字区域左上角坐标：距离容器顶部180px，左侧100px */
+            top: 150px;
+            left: 100px;
+            /* 文字区域宽度：限制在图片有效显示区域内 */
+            width: 60%;
+            /* 文字大小17px：比正文略小，区分层级 */
+            font-size: 17px;
+            /* 文字颜色为中灰色（#666）：与正文颜色区分 */
+            color: #666;
+            /* 文字左对齐：符合常规阅读习惯 */
+            text-align: left;
+            /* 层级设置：确保文字在图片上方显示 */
+            z-index: 2;
+        }
+
+        /* 碎碎念区域的标题样式 */
+        .notes-text h3 {
+            /* 去除顶部外边距：避免标题与上方内边距产生额外空白 */
+            margin-top: 0;
+            /* 标题与正文间距 */
+            margin-bottom: 15px;
+        }
+
+        /* 碎碎念列表样式 */
+        .notes-text ul {
+            /* 去除默认内边距：精确控制列表位置 */
+            padding-left: 20px;
+            /* 去除默认外边距：精确控制列表位置 */
+            margin: 0;
+        }
+
+        /* 碎碎念列表项样式 */
+        .notes-text li {
+            /* 列表项之间的间距 */
+            margin-bottom: 10px;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #9ec5ff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <img src="png/header_icon.png" alt="Header Icon">
+        <a href="home_page.html">首页</a>
+        <a href="experience.html">我的来时路</a>
+        <a href="offline_meeting.html">线下特种兵</a>
+        <a href="hometown.html">我的家乡</a>
+    </div>
+
+    <!-- 首页内容区域 -->
+    <div id="home" class="page home">
+        <div class="home-header">
+            <!-- 首页文字内容 -->
+            <div class="home-content">
+                <h1>Welcome to<br>gouzhen’s world!</h1>
+                <p class="small-text">盛夏白瓷梅子汤，碎冰撞壁当啷响</p>
+            </div>
+            <!-- 头像区域 -->
+            <div class="avatar">
+                <img src="png/avatar.png" alt="Avatar">
+            </div>
+        </div>
+        <div class="separator"></div>
+        <!-- 关于我区域 -->
+        <div class="about">
+            <h2>About me</h2>
+            
+            <!-- 关于我文字介绍 - 独立绝对定位元素 -->
+            <div class="about-text">
+                <p>　　你好呀，来到我主页的每一个人，我是名子探狗侦，You can call me 狗侦😎</p>
+                <p>　　我呢，目前就读于华中师范大学的计算机科学与技术专业（是的没错，就是传说中的程序媛），反正呢，代码也会敲一点儿，计算机知识也懂一些，也算是认真学了自己的专业课了吧🤲</p>
+                <p>　　除了所读的专业呢，我还是个追星女，对的没错就是那种猛猛去线下的追星女。追的呢，是内娱平均年龄较大的一个“假男团“——再就业男团（可能很多人没听过这个名字，他们是07年快乐男声前十三强里面的六个人嗷），趁着年少的时光，六位哥，我们好好见面吧！！！</p>
+            </div>
+            
+            <!-- 碎碎念容器（包含独立图片和文字） - 独立绝对定位元素 -->
+            <div class="notes-container">
+                <!-- 碎碎念独立图片 -->
+                <img src="png/decorative_sticky_notes.png" alt="Sticky Notes" class="notes-image">
+                <!-- 碎碎念文字内容 -->
+                <div class="notes-text">
+                    <h3>一些碎碎念</h3>
+                    <ul>
+                        <li>学计算机之后发现计算机的计是寄存器的寄(-ι_- )</li>
+                        <li>沉迷于线下，欢迎来六位老叔的线下抓我🤗</li>
+                        <li>人抽象但与人之间的相处不抽象，我喜欢新朋友捏🤲🥰</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2025 名子探狗侦的个人网站</p>
+        <p>感谢您的访问，Have a good day!</p>
+    </footer>
+
+    <!-- JavaScript 脚本 -->
+    <script>
+        // 为所有锚点链接添加平滑滚动效果
+        // 选择所有 href 以 "home_page.html#" 开头的链接
+        document.querySelectorAll('a[href^="home_page.html#"]').forEach(anchor => {
+            // 为每个链接添加点击事件监听
+            anchor.addEventListener('click', function (e) {
+                // 阻止默认跳转行为
+                e.preventDefault();
+                // 获取目标元素的 ID（分割 href 字符串，取 # 后面的部分）
+                const targetId = this.getAttribute('href').split('#')[1];
+                // 平滑滚动到目标元素
+                document.getElementById(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
